@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Career Readiness Report</title>
+<!--
+  Job Readiness Assessment — vacancy report template (skill v2.0, references/report.md).
+  HOW TO USE: replace ONLY the JSON inside <script id="report-data">. Every visual,
+  table and text block below is generated from that JSON, so the visuals always
+  match the written report. Do not edit the CSS or the script. No external files,
+  fonts or libraries are loaded; the page works offline and prints to PDF.
+-->
+<style>
+:root{
+  color-scheme:light;
+  --bg:#f6f5f2;--surface:#fcfcfb;--surface-2:#f0efec;--border:#dddcd6;
+  --text:#0b0b0b;--text-2:#52514e;--text-3:#6f6e69;
+  --accent:#1c5cab;
+  --m-strong:#1c5cab;--m-relevant:#3987e5;--m-partial:#86b6ef;--m-gap:#ec835a;--m-na:#8c8b85;
+  --v0:#cde2fb;--v1:#86b6ef;--v2:#3987e5;--v3:#1c5cab;
+  --ok:#0ca30c;--warn:#fab219;
+  --on-strong:#fff;--on-relevant:#fff;--on-partial:#0b0b0b;--on-gap:#0b0b0b;--on-v0:#0b0b0b;--on-v1:#0b0b0b;--on-v2:#fff;--on-v3:#fff;
+  --inference-bg:#fff4dc;--inference-text:#7a4f00;
+  --banner-bg:#fde8e1;--banner-text:#7b2a10;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#121211;--surface:#1a1a19;--surface-2:#242422;--border:#383835;
+    --text:#f0efec;--text-2:#c3c2b7;--text-3:#9a998f;
+    --accent:#6da7ec;
+    --m-strong:#9ec5f4;--m-relevant:#5598e7;--m-partial:#256abf;--m-gap:#ec835a;--m-na:#8c8b85;
+    --v0:#184f95;--v1:#256abf;--v2:#5598e7;--v3:#9ec5f4;--on-strong:#0b0b0b;--on-relevant:#0b0b0b;--on-partial:#fff;--on-gap:#0b0b0b;--on-v0:#fff;--on-v1:#fff;--on-v2:#0b0b0b;--on-v3:#0b0b0b;
+    --inference-bg:#3a2c0e;--inference-text:#f5cf7a;
+    --banner-bg:#3d1d12;--banner-text:#f5b59c;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#121211;--surface:#1a1a19;--surface-2:#242422;--border:#383835;
+  --text:#f0efec;--text-2:#c3c2b7;--text-3:#9a998f;
+  --accent:#6da7ec;
+  --m-strong:#9ec5f4;--m-relevant:#5598e7;--m-partial:#256abf;--m-gap:#ec835a;--m-na:#8c8b85;
+  --v0:#184f95;--v1:#256abf;--v2:#5598e7;--v3:#9ec5f4;--on-strong:#0b0b0b;--on-relevant:#0b0b0b;--on-partial:#fff;--on-gap:#0b0b0b;--on-v0:#fff;--on-v1:#fff;--on-v2:#0b0b0b;--on-v3:#0b0b0b;
+  --inference-bg:#3a2c0e;--inference-text:#f5cf7a;
+  --banner-bg:#3d1d12;--banner-text:#f5b59c;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+.wrap{max-width:1040px;margin:0 auto;padding:24px 16px 48px}
+h1{font-size:26px;line-height:1.2;margin:4px 0 6px}
+h2{font-size:19px;margin:0 0 4px}
+h3{font-size:15px;margin:0 0 6px}
+p{margin:0 0 8px}
+.muted{color:var(--text-2)}
+.small{font-size:13px}
+.banner{background:var(--banner-bg);color:var(--banner-text);border-radius:8px;padding:8px 12px;font-size:13px;font-weight:600;margin-bottom:16px}
+.head{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:13px;color:var(--text-2)}
+.meta b{color:var(--text);font-weight:600}
+button.print{border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer}
+button.print:hover{border-color:var(--accent)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px}
+.card-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;margin-bottom:12px}
+.how{font-size:13px;color:var(--text-2);margin:0}
+.grid{display:grid;gap:12px}
+.tiles{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.tile{background:var(--surface-2);border-radius:10px;padding:12px 14px}
+.tile .n{font-size:28px;font-weight:700;line-height:1.1}
+.tile .l{font-size:13px;color:var(--text-2)}
+.summary{font-size:15px;margin:12px 0 0}
+.two{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+/* legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--text-2);margin:8px 0 0}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block;flex:none}
+.sw.na{background:transparent;border:1.5px dashed var(--m-na)}
+/* stacked bars */
+.barrow{display:grid;grid-template-columns:96px 1fr;gap:10px;align-items:center;margin:8px 0}
+.barrow .lab{font-size:13px;color:var(--text-2)}
+.bar{display:flex;gap:2px;height:26px}
+.seg{border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;min-width:26px;color:#fff}
+.seg.light{color:#0b0b0b}
+.seg.na{background:transparent!important;border:1.5px dashed var(--m-na);color:var(--text-2)}
+.empty{font-size:13px;color:var(--text-3);font-style:italic}
+/* competencies */
+.comp{border:1px solid var(--border);border-radius:10px;padding:14px;background:var(--surface);min-width:0}
+.comp-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:flex-start}
+.badge{font-size:12px;font-weight:700;border-radius:999px;padding:3px 10px;white-space:nowrap}
+.b-demonstrated{background:var(--m-strong);color:#fff}
+.b-partial{background:var(--m-partial);color:#0b0b0b}
+.b-not_evidenced{border:1.5px dashed var(--m-na);color:var(--text-2)}
+:root[data-theme="dark"] .b-demonstrated{color:#0b0b0b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .b-demonstrated{color:#0b0b0b}:root:not([data-theme="light"]) .b-partial{color:#fff}}
+:root[data-theme="dark"] .b-partial{color:#fff}
+.count{font-size:13px;color:var(--text-2);margin:6px 0 8px}
+.chips{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-bottom:8px;min-width:0;max-width:100%}
+.chip{display:flex;align-items:flex-start;gap:6px;width:fit-content;max-width:100%;min-width:0;font-size:12.5px;line-height:1.35;border:1px solid var(--border);border-radius:12px;padding:3px 9px 3px 6px;background:var(--surface-2)}
+.chip .sw{margin-top:2px}
+.chip .lbl,.st .lbl{min-width:0;white-space:normal;overflow-wrap:anywhere}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;border-radius:4px;padding:1px 6px;background:var(--inference-bg);color:var(--inference-text);vertical-align:middle}
+.tag.fact{background:var(--surface-2);color:var(--text-2)}
+/* dot plot */
+.dp-axis,.dp-row{display:grid;grid-template-columns:minmax(120px,190px) 1fr minmax(120px,160px);gap:10px;align-items:center}
+.dp-axis{font-size:12px;color:var(--text-3);margin-bottom:2px}
+.dp-ticks{position:relative;height:16px}
+.dp-ticks span{position:absolute;transform:translateX(-50%)}
+.dp-row{padding:6px 0;border-top:1px solid var(--border)}
+.dp-name{font-size:13.5px}
+.dp-name small{display:block;color:var(--text-3);font-size:11.5px}
+.track{position:relative;height:22px}
+.track .gl{position:absolute;top:0;bottom:0;width:1px;background:var(--border)}
+.track .ln{position:absolute;top:10px;height:2px;background:var(--text-3)}
+.mk{position:absolute;top:3px;width:16px;height:16px;margin-left:-8px;border-radius:50%}
+.mk.cur{border:2px solid var(--surface)}
+.mk.cur.na{background:transparent;border:2px dashed var(--m-na)}
+.mk.tgt{border-radius:2px;transform:rotate(45deg) scale(.95);border:2.5px solid var(--text);background:transparent}
+.dp-status{font-size:12.5px;color:var(--text-2)}
+/* evidence */
+.vbar{display:flex;gap:2px;height:30px;margin-top:8px}
+/* layer D */
+.dgrid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.dtile{border-radius:8px;padding:9px 10px;font-size:13px;border:1px solid var(--border)}
+.dtile b{display:block;font-size:12px;color:var(--text-3);font-weight:600}
+.dtile .lbl{display:block;font-weight:700;margin-top:3px}
+.l-Demonstrated{background:var(--m-strong);color:#fff;border-color:transparent}
+.l-Demonstrated b{color:#dce9fb}
+.l-Transferable{background:var(--m-partial);color:#0b0b0b;border-color:transparent}
+.l-Transferable b{color:#24405f}
+.l-Self-reported,.l-Needs-verification{background:var(--surface-2)}
+.l-Not-evidenced{border-style:dashed;color:var(--text-2)}
+:root[data-theme="dark"] .l-Demonstrated{color:#0b0b0b}:root[data-theme="dark"] .l-Demonstrated b{color:#24405f}
+:root[data-theme="dark"] .l-Transferable{color:#fff}:root[data-theme="dark"] .l-Transferable b{color:#dce9fb}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .l-Demonstrated{color:#0b0b0b}:root:not([data-theme="light"]) .l-Demonstrated b{color:#24405f}:root:not([data-theme="light"]) .l-Transferable{color:#fff}:root:not([data-theme="light"]) .l-Transferable b{color:#dce9fb}}
+/* priorities */
+.prios{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.prio{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:10px;padding:14px;background:var(--surface)}
+.prio .rank{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.03em}
+.prio .hrs{display:inline-block;margin-top:6px;font-size:12.5px;background:var(--surface-2);border-radius:6px;padding:2px 8px}
+/* timeline */
+.tl-axis,.tl-row{display:grid;grid-template-columns:minmax(140px,240px) 1fr;gap:10px;align-items:center}
+.tl-weeks{display:grid;font-size:12px;color:var(--text-3)}
+.tl-row{padding:5px 0;border-top:1px solid var(--border)}
+.tl-track{position:relative;height:22px;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(var(--cw) - 1px),var(--border) calc(var(--cw) - 1px),var(--border) var(--cw))}
+.tl-bar{position:absolute;top:3px;height:16px;border-radius:4px;background:var(--accent)}
+.tl-name{font-size:13.5px}
+.tl-name small{display:block;color:var(--text-3);font-size:11.5px}
+/* details */
+details.card{padding:0}
+details.card>summary{list-style:none;cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:700;font-size:16px}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary::after{content:"Show";font-size:13px;font-weight:600;color:var(--accent)}
+details.card[open]>summary::after{content:"Hide"}
+details.card>summary span{font-weight:400;font-size:13px;color:var(--text-2);display:block}
+.dbody{padding:0 18px 18px}
+.tbl{overflow-x:auto;border:1px solid var(--border);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:720px}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:1px solid var(--border)}
+th{background:var(--surface-2);font-weight:600;color:var(--text-2);position:sticky;top:0}
+tr:last-child td{border-bottom:none}
+ul{margin:4px 0 10px;padding-left:20px}
+li{margin:3px 0}
+a{color:var(--accent)}
+.st{display:inline-flex;align-items:flex-start;gap:5px;max-width:100%;min-width:0}
+.st .sw{margin-top:3px}
+footer{font-size:12.5px;color:var(--text-3);margin-top:20px;border-top:1px solid var(--border);padding-top:12px}
+@media (max-width:560px){
+  h1{font-size:22px}
+  .dp-axis,.dp-row{grid-template-columns:110px 1fr}
+  .dp-status{grid-column:2;margin-top:-4px}
+  .dp-axis>span:last-child{display:none}
+  .barrow{grid-template-columns:76px 1fr}
+}
+@media print{
+  body{background:#fff;font-size:12px}
+  .wrap{max-width:none;padding:0}
+  button.print{display:none}
+  .card{break-inside:avoid;border-color:#ccc}
+  details.card>summary::after{content:""}
+  table{min-width:0}
+  .tbl{overflow:visible}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><noscript>This report needs JavaScript to draw its charts. The data is in the page source.</noscript></div>
+
+<script type="application/json" id="report-data">
+{
+  "illustrative": true,
+  "meta": {
+    "report_id": "EX-001", "version": "1", "date_checked": "2026-10-27",
+    "person_id": "P-EX-01", "career_stage": "Student / intern",
+    "job_title": "Data Analyst Intern", "employer": "Example Subscriptions (fictional)",
+    "location": "Lyon, France", "contract": "6-month internship",
+    "source": "Job description pasted by adviser (fictional)", "language": "en"
+  },
+  "summary": {
+    "readiness": "Solid base for this internship: Python, Excel and teamwork are backed by evidence. The two main gaps are SQL depth and subscription analytics; both can be closed with about 22 hours of focused practice.",
+    "limitations": "Communication and data-protection awareness could not be assessed: no slides, recording or feedback were supplied."
+  },
+  "company": [
+    {"element": "Business model", "statement": "Illustrative: revenue from monthly subscriptions.", "type": "fact", "source": "S-EX1"},
+    {"element": "Role implications", "statement": "Retention and churn questions are likely to be central to the analyst's work.", "type": "analysis", "source": ""}
+  ],
+  "competencies": [
+    {"id": "C-DA1", "name": "Prepare trustworthy data", "origin": "implicit", "rule": "Deliverables: 'build monthly KPI reporting' (Section 16.2)", "status": "partial", "context": "Course project used joins and aggregations; no data-quality checks shown.", "components": ["SQL", "EXCEL"]},
+    {"id": "C-DA2", "name": "Analyse and interpret data", "origin": "implicit", "rule": "Responsibilities: 'analyse engagement trends'", "status": "partial", "context": "Python analysis is public; no retention or experiment analysis yet.", "components": ["PY", "PROD", "AB"]},
+    {"id": "C-DA3", "name": "Communicate insight for decisions", "origin": "explicit", "rule": "Posting: 'share insights with the marketing team'", "status": "partial", "context": "Dashboard built; presenting it to a business audience is not evidenced.", "components": ["BI", "COMM"]},
+    {"id": "C-DA4", "name": "Work with stakeholders", "origin": "implicit", "rule": "Organisation context: cross-team role", "status": "demonstrated", "context": "Group consulting project with client presentation and peer feedback (V1).", "components": ["COLLAB"]},
+    {"id": "C-DA5", "name": "Use data and AI responsibly", "origin": "implicit", "rule": "Sector regulation: customer personal data", "status": "not_evidenced", "context": "No evidence supplied.", "components": ["GDPR"]}
+  ],
+  "skills": [
+    {"id": "SQL", "name": "SQL", "layer": "C", "requirement": "required", "origin": "explicit", "target": 2, "current": 1, "match": "partial", "label": "Demonstrated", "verification": "V1", "evidence": "Course project: joins and aggregations on a retail dataset", "source": "Project report (PDF), 2026", "confidence": "Medium: query complexity not visible", "why": "Daily data extraction for KPI reporting", "action": "Practise CTEs, window functions and data-quality checks"},
+    {"id": "PROD", "name": "Product analytics (retention)", "layer": "C", "requirement": "preferred", "origin": "implicit", "rule": "Business model: subscription", "target": 2, "current": 1, "match": "partial", "label": "Transferable", "verification": "V1", "evidence": "General sales analysis project", "source": "Project report, 2026", "confidence": "Medium", "why": "Retention drives subscription revenue", "action": "Cohort retention analysis on a public dataset"},
+    {"id": "COMM", "name": "Communication (D5)", "layer": "D", "requirement": "preferred", "origin": "implicit", "rule": "Responsibilities: 'share insights with marketing'", "target": 2, "current": null, "match": "not_assessed", "label": "Needs verification", "verification": "V0", "evidence": "Presentation listed on CV; no slides or feedback", "source": "CV", "confidence": "Low: no artefact", "why": "Findings must reach non-technical colleagues", "action": "Record a 5-minute evidence-backed presentation"},
+    {"id": "AB", "name": "Experimentation (A/B tests)", "layer": "C", "requirement": "preferred", "origin": "explicit", "target": 2, "current": 0, "match": "gap", "label": "Self-reported", "verification": "V0", "evidence": "Person confirmed no experiment designed yet", "source": "Own statement, 2026-10-20", "confidence": "High: self-confirmed", "why": "Posting mentions testing pricing pages", "action": "Analyse a public A/B test dataset end to end"},
+    {"id": "BI", "name": "BI dashboards", "layer": "C", "requirement": "required", "origin": "explicit", "target": 2, "current": 1, "match": "relevant", "label": "Transferable", "verification": "V1", "evidence": "Power BI dashboard for a course case", "source": "Dashboard file, 2026", "confidence": "Medium", "why": "Monthly KPI reporting", "action": "Add metric definitions and a business narrative"},
+    {"id": "PY", "name": "Python (pandas)", "layer": "C", "requirement": "required", "origin": "explicit", "target": 2, "current": 2, "match": "strong", "label": "Demonstrated", "verification": "V2", "evidence": "Public repository with a reproducible analysis", "source": "Public code repository", "confidence": "High", "why": "Automation of recurring reports", "action": "Keep; link the repository on the CV"},
+    {"id": "EXCEL", "name": "Excel modelling", "layer": "A", "requirement": "required", "origin": "explicit", "target": 2, "current": 2, "match": "strong", "label": "Demonstrated", "verification": "V3", "evidence": "Graded financial-modelling assignment", "source": "Grade extract from the issuing school", "confidence": "High", "why": "Ad-hoc analysis for marketing", "action": "No action needed"},
+    {"id": "COLLAB", "name": "Collaboration (D6)", "layer": "D", "requirement": "preferred", "origin": "implicit", "rule": "Organisation context: cross-team role", "target": 2, "current": 2, "match": "strong", "label": "Demonstrated", "verification": "V1", "evidence": "Group consulting project with peer feedback", "source": "Peer-feedback form, 2026", "confidence": "Medium", "why": "Works with marketing and product teams", "action": "Prepare one STAR example for interviews"},
+    {"id": "GDPR", "name": "Data-protection awareness", "layer": "A", "requirement": "contextual", "origin": "implicit", "rule": "Sector regulation: customer personal data", "target": 1, "current": null, "match": "not_assessed", "label": "Not evidenced", "verification": "V0", "evidence": "None supplied", "source": "—", "confidence": "—", "why": "Handles subscriber personal data", "action": "Short free GDPR introduction; note one takeaway"}
+  ],
+  "layer_d": [
+    {"id": "D1", "name": "Self-regulation", "label": "Not evidenced"},
+    {"id": "D2", "name": "Flexibility", "label": "Transferable"},
+    {"id": "D4", "name": "Empathy", "label": "Not evidenced"},
+    {"id": "D5", "name": "Communication", "label": "Needs verification"},
+    {"id": "D6", "name": "Collaboration", "label": "Demonstrated"},
+    {"id": "D7", "name": "Growth mindset", "label": "Not evidenced"},
+    {"id": "D8", "name": "Critical thinking", "label": "Transferable"},
+    {"id": "D9", "name": "Managing learning", "label": "Self-reported"},
+    {"id": "D10", "name": "Creating new value", "label": "Not evidenced"},
+    {"id": "D11", "name": "Reconciling tensions", "label": "Not evidenced"},
+    {"id": "D12", "name": "Taking responsibility", "label": "Not evidenced"},
+    {"id": "D13", "name": "Leadership and influence", "label": "Not evidenced"},
+    {"id": "D15", "name": "Responsible tech and AI use", "label": "Transferable"}
+  ],
+  "priorities": [
+    {"skill": "SQL", "why": "Required, and used daily for KPI reporting", "action": "CTEs, window functions and data-quality checks on a public dataset", "hours": 10},
+    {"skill": "PROD", "why": "Core to a subscription business; current evidence is general", "action": "Cohort retention analysis with a one-page write-up", "hours": 12},
+    {"skill": "COMM", "why": "Not assessable without an artefact", "action": "Record a 5-minute presentation of the retention analysis", "hours": 4}
+  ],
+  "plan": [
+    {"task": "SQL practice set", "skill": "SQL", "start": 1, "weeks": 2, "deliverable": "Query notebook in public repository", "criterion": "10 solved exercises incl. window functions"},
+    {"task": "Retention analysis", "skill": "PROD", "start": 2, "weeks": 3, "deliverable": "Notebook and one-page summary", "criterion": "Cohort table and churn chart explained"},
+    {"task": "Recorded presentation", "skill": "COMM", "start": 4, "weeks": 1, "deliverable": "5-minute video and slides", "criterion": "Reviewed by an adviser"},
+    {"task": "A/B test exercise", "skill": "AB", "start": 5, "weeks": 1, "deliverable": "Short analysis note", "criterion": "Test result interpreted with uncertainty"}
+  ],
+  "interview": {
+    "positioning": ["Lead the CV with the public Python repository and the dashboard project.", "Describe SQL as 'joins and aggregations in course projects' until the practice set is done."],
+    "behavioural": ["Collaboration: the group consulting project — your role, a disagreement, the outcome."],
+    "topics": ["Retention and churn metrics", "Designing a monthly KPI report"],
+    "questions": ["Which metrics does the team report on monthly?", "How are analysis requests prioritised between teams?"]
+  },
+  "sources": [
+    {"id": "S-EX1", "title": "Illustrative company page (fictional)", "url": "", "publisher": "—", "retrieved": "2026-10-27"}
+  ],
+  "assumptions": ["Person has about 6 hours per week before applying.", "Target levels follow the student / intern ceiling (SKILL.md Section 2)."]
+}
+</script>
+
+<script>
+(function(){
+  var D = JSON.parse(document.getElementById('report-data').textContent);
+  var app = document.getElementById('app');
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+  var M = {
+    strong:{t:'Strong evidence',v:'--m-strong',light:false},
+    relevant:{t:'Relevant / transferable',v:'--m-relevant',light:false},
+    partial:{t:'Partial evidence',v:'--m-partial',light:true},
+    gap:{t:'Gap (evidence shows)',v:'--m-gap',light:true},
+    not_assessed:{t:'Not assessed',v:'--m-na',na:true}
+  };
+  var ORDER=['strong','relevant','partial','gap','not_assessed'];
+  var REQ=['required','preferred','contextual'];
+  var CS={demonstrated:'Demonstrated in context',partial:'Partly evidenced',not_evidenced:'Not yet evidenced'};
+  var skillById={}; (D.skills||[]).forEach(function(s){skillById[s.id]=s;});
+  function sw(k){var m=M[k];return m.na?'<i class="sw na"></i>':'<i class="sw" style="background:var('+m.v+')"></i>';}
+  function legend(keys){return '<div class="legend">'+keys.map(function(k){return '<span>'+sw(k)+esc(M[k].t)+'</span>';}).join('')+'</div>';}
+  function lvl(n){return n==null?'Not assessed':(n===0?'Below L1':'L'+n);}
+  function card(title,how,body,extra){return '<section class="card"><div class="card-head"><div><h2>'+esc(title)+'</h2>'+(how?'<p class="how">'+how+'</p>':'')+'</div>'+(extra||'')+'</div>'+body+'</section>';}
+  var html='';
+  var m=D.meta||{};
+  if(D.illustrative) html+='<div class="banner">Illustrative example — not a real person or employer.</div>';
+  html+='<div class="head"><div><div class="small muted">Career readiness report · '+esc(m.career_stage)+'</div><h1>'+esc(m.job_title)+' — '+esc(m.employer)+'</h1><div class="meta"><span><b>Location</b> '+esc(m.location)+'</span><span><b>Contract</b> '+esc(m.contract)+'</span><span><b>Person</b> '+esc(m.person_id)+'</span><span><b>Checked</b> '+esc(m.date_checked)+'</span><span><b>Report</b> '+esc(m.report_id)+' v'+esc(m.version)+'</span></div></div><button class="print" onclick="window.print()">Save as PDF</button></div>';
+
+  // 1. At a glance
+  var S=D.skills||[]; var c={}; ORDER.forEach(function(k){c[k]=0;}); S.forEach(function(s){c[s.match]=(c[s.match]||0)+1;});
+  var tiles='<div class="grid tiles">'+
+    '<div class="tile"><div class="n">'+S.length+'</div><div class="l">requirements analysed</div></div>'+
+    '<div class="tile"><div class="n">'+(c.strong+c.relevant)+'</div><div class="l">backed by strong or relevant evidence</div></div>'+
+    '<div class="tile"><div class="n">'+(c.partial+c.gap)+'</div><div class="l">to develop (partial or gap)</div></div>'+
+    '<div class="tile"><div class="n">'+c.not_assessed+'</div><div class="l">not assessed — evidence needed</div></div></div>';
+  var sm=D.summary||{};
+  tiles+='<p class="summary">'+esc(sm.readiness)+'</p><p class="small muted"><b>Limits of this assessment:</b> '+esc(sm.limitations)+'</p>';
+  html+=card('At a glance','Counts, not a score: this report never reduces readiness to one number.',tiles);
+
+  // 2. Readiness by requirement type
+  var rb='';
+  REQ.forEach(function(r){
+    var rows=S.filter(function(s){return s.requirement===r;});
+    rb+='<div class="barrow"><div class="lab">'+r.charAt(0).toUpperCase()+r.slice(1)+' ('+rows.length+')</div>';
+    if(!rows.length){rb+='<div class="empty">None in this posting</div></div>';return;}
+    rb+='<div class="bar">';
+    ORDER.forEach(function(k){var n=rows.filter(function(s){return s.match===k;}).length;if(!n)return;
+      var mm=M[k];rb+='<div class="seg'+(mm.na?' na':'')+'" style="flex:'+n+';'+(mm.na?'':'background:var('+mm.v+');color:var(--on-'+k+')')+'" title="'+esc(mm.t)+': '+n+'">'+n+'</div>';});
+    rb+='</div></div>';
+  });
+  rb+=legend(ORDER);
+  // 3. Evidence strength
+  var V=['V0','V1','V2','V3'],VT={V0:'V0 self-statement',V1:'V1 document supplied',V2:'V2 externally verifiable',V3:'V3 institutionally verified'};
+  var assessed=S.filter(function(s){return s.match!=='not_assessed';});
+  var vb='<div class="vbar">';V.forEach(function(v,i){var n=assessed.filter(function(s){return s.verification===v;}).length;if(!n)return;
+    vb+='<div class="seg" style="flex:'+n+';background:var(--'+v.toLowerCase()+');color:var(--on-'+v.toLowerCase()+')" title="'+VT[v]+': '+n+'">'+n+'</div>';});
+  vb+='</div><div class="legend">'+V.map(function(v){return '<span><i class="sw" style="background:var(--'+v.toLowerCase()+')"></i>'+VT[v]+'</span>';}).join('')+'</div>';
+  html+='<div class="grid two">'+
+    card('Readiness by requirement type','How the evidence matches each type of requirement in the posting.',rb).replace('class="card"','class="card" style="margin:0"')+
+    card('How solid is the evidence?','For the '+assessed.length+' assessed requirements: how far each piece of evidence can be checked.',vb).replace('class="card"','class="card" style="margin:0"')+
+    '</div><div style="height:16px"></div>';
+
+  // 4. Competencies
+  var cc='<div class="grid two">';
+  (D.competencies||[]).forEach(function(k){
+    var comps=k.components.map(function(id){return skillById[id];}).filter(Boolean);
+    var ev=comps.filter(function(s){return s.match==='strong'||s.match==='relevant';}).length;
+    cc+='<div class="comp"><div class="comp-top"><h3>'+esc(k.name)+'</h3><span class="badge b-'+k.status+'">'+esc(CS[k.status])+'</span></div>'+
+      '<div class="count">'+ev+' of '+comps.length+' component'+(comps.length>1?'s':'')+' backed by strong or relevant evidence</div><div class="chips">'+
+      comps.map(function(s){return '<span class="chip" title="'+esc(M[s.match].t)+'">'+sw(s.match)+'<span class="lbl">'+esc(s.name)+' · '+esc(M[s.match].t)+'</span></span>';}).join('')+
+      '</div><p class="small">'+esc(k.context)+'</p><p class="small muted">'+(k.origin==='implicit'?'<span class="tag">Inference</span> ':'<span class="tag fact">Stated in posting</span> ')+esc(k.rule)+'</p></div>';
+  });
+  cc+='</div>'+legend(ORDER);
+  html+=card('Competencies for this role','A competency is the ability to combine knowledge and skills in a real work situation. Each card shows the skills it is built from.',cc);
+
+  // 5. Skill-by-skill dot plot
+  var pos=function(n){return n==null?100:(n/4)*86+4;}; // 0..4 -> 4..90 ; NA -> 100 column
+  var dp='<div class="dp-axis"><span></span><div class="dp-ticks">'+['Below L1','L1','L2','L3','L4'].map(function(t,i){return '<span style="left:'+pos(i)+'%">'+t+'</span>';}).join('')+'</div><span>Status</span></div>';
+  S.forEach(function(s){
+    var cur=s.current, tg=s.target;
+    dp+='<div class="dp-row"><div class="dp-name">'+esc(s.name)+'<small>'+esc(s.requirement)+(s.origin==='implicit'?' · inference':'')+'</small></div><div class="track">';
+    [0,1,2,3,4].forEach(function(i){dp+='<i class="gl" style="left:'+pos(i)+'%"></i>';});
+    if(cur!=null){var a=Math.min(pos(cur),pos(tg)),b=Math.max(pos(cur),pos(tg));dp+='<i class="ln" style="left:'+a+'%;width:'+(b-a)+'%"></i>';}
+    if(cur==null) dp+='<i class="mk cur na" style="left:96%" title="Current level: not assessed"></i>';
+    else dp+='<i class="mk cur" style="left:'+pos(cur)+'%;background:var('+M[s.match].v+')" title="Current: '+lvl(cur)+' ('+esc(M[s.match].t)+')"></i>';
+    dp+='<i class="mk tgt" style="left:'+pos(tg)+'%" title="Target: '+lvl(tg)+'"></i>';
+    dp+='</div><div class="dp-status"><span class="st">'+sw(s.match)+'<span class="lbl">'+esc(M[s.match].t)+'</span></span></div></div>';
+  });
+  dp+='<div class="legend"><span><i class="sw" style="border:2.5px solid var(--text);transform:rotate(45deg) scale(.75);background:var(--surface)"></i>Target level for this role</span><span><i class="sw" style="border-radius:50%;background:var(--m-relevant)"></i>Current level (colour = evidence status)</span><span><i class="sw na" style="border-radius:50%"></i>Not assessed (shown at the edge, never as zero)</span></div>';
+  html+=card('Skill by skill: where you are vs. the target','Ordered by priority. Levels: L1 foundation · L2 applied · L3 professional · L4 advanced.',dp);
+
+  // 6. Layer D
+  var dg='<div class="grid dgrid">';(D.layer_d||[]).forEach(function(d){dg+='<div class="dtile l-'+d.label.replace(/ /g,'-')+'"><b>'+esc(d.id)+'</b>'+esc(d.name)+'<span class="lbl">'+esc(d.label)+'</span></div>';});
+  dg+='</div><p class="small muted" style="margin-top:8px">"Not evidenced" means no behavioural example was supplied yet. It is an evidence goal, not a weakness. Wellbeing is never assessed.</p>';
+  html+=card('Durable human skills','Skills employers rate highly and that current generative AI performs poorly. Only real examples count as evidence.',dg);
+
+  // 7. Priorities
+  var pr='<div class="grid prios">';(D.priorities||[]).forEach(function(p,i){var s=skillById[p.skill]||{name:p.skill};
+    pr+='<div class="prio"><div class="rank">Priority '+(i+1)+'</div><h3>'+esc(s.name)+'</h3><p class="small muted">'+esc(p.why)+'</p><p class="small"><b>Next step:</b> '+esc(p.action)+'</p><span class="hrs">≈ '+esc(p.hours)+' h</span></div>';});
+  pr+='</div>';
+  html+=card('Your top 3 priorities','Ranked by how required the skill is, its importance to the role, the gap, evidence strength and feasibility.',pr);
+
+  // 8. Timeline
+  var P=D.plan||[];var W=P.reduce(function(a,t){return Math.max(a,t.start+t.weeks-1);},1);
+  var tl='<div class="tl-axis"><span></span><div class="tl-weeks" style="grid-template-columns:repeat('+W+',1fr)">';
+  for(var w=1;w<=W;w++) tl+='<span>Wk '+w+'</span>';
+  tl+='</div></div>';
+  P.forEach(function(t){var s=skillById[t.skill]||{name:t.skill};
+    tl+='<div class="tl-row"><div class="tl-name">'+esc(t.task)+'<small>'+esc(s.name)+' · '+esc(t.deliverable)+'</small></div><div class="tl-track" style="--cw:calc(100% / '+W+')"><i class="tl-bar" style="left:calc('+(t.start-1)+' * 100% / '+W+' + 2px);width:calc('+t.weeks+' * 100% / '+W+' - 4px)" title="'+esc(t.criterion)+'"></i></div></div>';});
+  html+=card('Your plan, week by week','Each bar is one task; the details table below gives its deliverable and completion criterion.',tl);
+
+  // Details
+  function det(title,sub,body,open){return '<details class="card"'+(open?' open':'')+'><summary><div>'+esc(title)+'<span>'+esc(sub)+'</span></div></summary><div class="dbody">'+body+'</div></details>';}
+  function table(head,rows){return '<div class="tbl"><table><thead><tr>'+head.map(function(h){return '<th>'+esc(h)+'</th>';}).join('')+'</tr></thead><tbody>'+rows.map(function(r){return '<tr>'+r.map(function(x){return '<td>'+x+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';}
+  html+='<h2 style="margin:28px 0 10px">Full report</h2>';
+  html+=det('Company intelligence','Facts are cited; analysis is labelled.',table(['Element','Statement','Type','Source'],(D.company||[]).map(function(f){return [esc(f.element),esc(f.statement),f.type==='analysis'?'<span class="tag">Analysis</span>':'<span class="tag fact">Fact</span>',esc(f.source||'—')];})));
+  html+=det('Job requirements','Explicit and implicit requirements and why they matter.',table(['Requirement','Origin','Type','Basis','Why it matters','Target'],S.map(function(s){return [esc(s.name),s.origin==='implicit'?'<span class="tag">Inference</span>':'Explicit',esc(s.requirement),esc(s.rule||'Stated in posting'),esc(s.why),lvl(s.target)];})));
+  html+=det('Your evidence vs. the role','Evidence, verification level and recommended action for each requirement.',table(['Skill','Your evidence','Source','Verification','Evidence label','Match','Confidence','Action'],S.map(function(s){return [esc(s.name),esc(s.evidence),esc(s.source),esc(s.verification),esc(s.label),'<span class="st">'+sw(s.match)+'<span class="lbl">'+esc(M[s.match].t)+'</span></span>',esc(s.confidence),esc(s.action)];})));
+  html+=det('Learning and portfolio plan','Tasks, time, deliverables and completion criteria.',table(['Task','Skill','Weeks','Deliverable','Done when'],P.map(function(t){return [esc(t.task),esc((skillById[t.skill]||{}).name||t.skill),'Wk '+t.start+(t.weeks>1?'–'+(t.start+t.weeks-1):''),esc(t.deliverable),esc(t.criterion)];})));
+  var iv=D.interview||{};function ul(a){return '<ul>'+(a||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';}
+  html+=det('Application and interview preparation','Truthful CV positioning and interview practice.','<h3>CV positioning</h3>'+ul(iv.positioning)+'<h3>Behavioural examples to prepare</h3>'+ul(iv.behavioural)+'<h3>Role topics to revise</h3>'+ul(iv.topics)+'<h3>Questions to ask the employer</h3>'+ul(iv.questions));
+  html+=det('Sources, assumptions and limitations','Where every fact comes from.',table(['ID','Source','Publisher','Retrieved'],(D.sources||[]).map(function(s){return [esc(s.id),s.url?'<a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.title)+'</a>':esc(s.title),esc(s.publisher),esc(s.retrieved)];}))+'<h3 style="margin-top:12px">Assumptions</h3>'+ul(D.assumptions)+'<h3>Limitations</h3>'+ul([sm.limitations,'This report supports career guidance only. It is not a grade, an admission decision or a hiring decision.']));
+  html+='<footer>Report '+esc(m.report_id)+' v'+esc(m.version)+', checked '+esc(m.date_checked)+'. All charts are drawn from the same data as the tables, and the sources and limitations above apply to them. Generated with AI assistance using the Job Readiness Assessment skill. Guidance only: not a grade, a hiring decision or an official assessment.</footer>';
+  app.innerHTML=html;
+  window.addEventListener('beforeprint',function(){document.querySelectorAll('details').forEach(function(d){d.open=true;});});
+})();
+</script>
+</body>
+</html>
